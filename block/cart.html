@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore - Cart</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <div class="logo"><a href="index.html">TechStore</a></div>
+                <button class="catalog-btn" id="catalogBtn">
+                    <span class="icon">☰</span> Catalog
+                </button>
+                <div class="city" id="citySelector">
+                    <span class="icon">📍</span>
+                    <span id="cityName">Astana</span>
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search products..." id="searchInput">
+                    <button class="search-btn">🔍</button>
+                </div>
+                <div class="header-actions">
+                    <a href="favorites.html" class="icon-btn">
+                        <span class="icon">❤️</span>
+                        <span class="label">Favorites</span>
+                    </a>
+                    <a href="cart.html" class="icon-btn">
+                        <span class="icon">🛒</span>
+                        <span class="label">Cart</span>
+                        <span class="badge" id="cartBadge">0</span>
+                    </a>
+                    <a href="profile.html" class="icon-btn user-section" id="userSection">
+                        <span class="icon">👤</span>
+                        <span class="label" id="userName">Guest</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="catalog-menu" id="catalogMenu">
+        <div class="catalog-content">
+            <h3>Categories</h3>
+            <ul>
+                <li><a href="catalog.html?category=phones">📱 Phones</a></li>
+                <li><a href="catalog.html?category=laptops">💻 Laptops</a></li>
+                <li><a href="catalog.html?category=accessories">🎧 Accessories</a></li>
+                <li><a href="catalog.html?category=tablets">📱 Tablets</a></li>
+                <li><a href="catalog.html?category=smartwatches">⌚ Smartwatches</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <div class="container">
+            <h1>Shopping Cart</h1>
+            <div class="cart-container">
+                <div class="cart-items" id="cartItems">
+                    <!-- Cart items will be loaded by JavaScript -->
+                </div>
+                <div class="cart-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping:</span>
+                        <span>Free</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                    <button class="btn-primary btn-block" id="placeOrderBtn">Place Order</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About TechStore</h4>
+                    <p>Your trusted online technology store with the best deals on electronics.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-icon">📘</a>
+                        <a href="#" class="social-icon">📷</a>
+                        <a href="#" class="social-icon">🐦</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 TechStore. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/data.js"></script>
+    <script src="/js/cart.js"></script>
+</body>
+</html>
