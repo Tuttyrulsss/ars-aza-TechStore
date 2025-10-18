@@ -1,5 +1,6 @@
-// Mock product data
-const products = [
+
+
+export const products = [
   {
     id: 1,
     name: "iPhone 15 Pro",
@@ -7,7 +8,7 @@ const products = [
     price: 999,
     rating: 4.8,
     description: "Latest iPhone with A17 Pro chip and titanium design",
-    image: "📱",
+    image: "img/iphon.jpg",
     popularity: 95,
   },
   {
@@ -17,7 +18,7 @@ const products = [
     price: 2499,
     rating: 4.9,
     description: "Powerful laptop with M3 Max chip for professionals",
-    image: "💻",
+    image: "img/iphon.jpg",
     popularity: 90,
   },
   {
@@ -27,7 +28,7 @@ const products = [
     price: 249,
     rating: 4.7,
     description: "Premium wireless earbuds with active noise cancellation",
-    image: "🎧",
+    image: "img/iphon.jpg",
     popularity: 88,
   },
   {
@@ -37,7 +38,7 @@ const products = [
     price: 599,
     rating: 4.6,
     description: "Versatile tablet with M1 chip and stunning display",
-    image: "📱",
+    image: "img/iphon.jpg",
     popularity: 85,
   },
   {
@@ -47,7 +48,7 @@ const products = [
     price: 799,
     rating: 4.8,
     description: "Rugged smartwatch for extreme adventures",
-    image: "⌚",
+    image: "img/iphon.jpg",
     popularity: 82,
   },
   {
@@ -57,7 +58,7 @@ const products = [
     price: 899,
     rating: 4.7,
     description: "Flagship Android phone with AI features",
-    image: "📱",
+    image: "img/iphon.jpg",
     popularity: 87,
   },
   {
@@ -67,7 +68,7 @@ const products = [
     price: 1799,
     rating: 4.6,
     description: "Premium Windows laptop with stunning display",
-    image: "💻",
+    image: "img/iphon.jpg",
     popularity: 80,
   },
   {
@@ -77,7 +78,7 @@ const products = [
     price: 399,
     rating: 4.9,
     description: "Industry-leading noise cancelling headphones",
-    image: "🎧",
+    image: "img/iphon.jpg",
     popularity: 92,
   },
 ]
@@ -227,7 +228,7 @@ function updateUserDisplay() {
   const userName = document.getElementById("userName")
   if (userName) {
     const user = userManager.getCurrentUser()
-    userName.textContent = user ? user.name : "Guest"
+    userName.textContent = user ? user.name : "Профиль"
   }
 }
 

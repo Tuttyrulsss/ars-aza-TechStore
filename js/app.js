@@ -1,4 +1,5 @@
-// Catalog menu toggle
+import { productManager } from './script.js';
+
 const catalogBtn = document.getElementById("catalogBtn")
 const catalogMenu = document.getElementById("catalogMenu")
 
@@ -63,7 +64,8 @@ if (carousel) {
 // Load products on home page
 const productsGrid = document.getElementById("productsGrid")
 if (productsGrid) {
-  const prods = window.productManager.getProducts().slice(0, 8)
+  const prods = productManager.getProducts().slice(0, 8);
+  console.log(prods);
 
   productsGrid.innerHTML = prods
     .map(

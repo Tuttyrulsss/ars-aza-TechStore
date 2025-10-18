@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechStore - Home</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
+
 <body>
     <header class="header">
         <div class="container">
@@ -62,23 +64,23 @@
                     <div class="carousel-track">
                         <div class="banner-slide active">
                             <div class="banner-content">
-                                <h1>Latest Tech Deals</h1>
-                                <p>Up to 50% off on selected items</p>
-                                <a href="catalog.html" class="btn-primary">Shop Now</a>
+                                <h1>Последние предложения</h1>
+                                <p>Скидка до 50% на выбранные товары</p>
+                                <a href="catalog.html" class="btn-primary">Купить сейчас</a>
                             </div>
                         </div>
                         <div class="banner-slide">
                             <div class="banner-content">
-                                <h1>New Arrivals</h1>
-                                <p>Check out the latest gadgets</p>
-                                <a href="catalog.html" class="btn-primary">Explore</a>
+                                <h1>Новые поступления</h1>
+                                <p>Ознакомьтесь с новейшими гаджетами</p>
+                                <a href="catalog.html" class="btn-primary">Посмотрим</a>
                             </div>
                         </div>
                         <div class="banner-slide">
                             <div class="banner-content">
-                                <h1>Premium Quality</h1>
-                                <p>Top brands at best prices</p>
-                                <a href="catalog.html" class="btn-primary">Discover</a>
+                                <h1>Премиум качество</h1>
+                                <p>Лучшие бренды по самым выгодным ценам от азамата</p>
+                                <a href="catalog.html" class="btn-primary">Аза чорт</a>
                             </div>
                         </div>
                     </div>
@@ -91,17 +93,17 @@
                 <div class="promo-card">
                     <div class="promo-image">🎉</div>
                     <div class="promo-text">
-                        <h3>Special Offers</h3>
-                        <p>Get amazing discounts on top tech products. Limited time only!</p>
+                        <h3>Специальный сюрпрайз</h3>
+                        <p>Амазоннан прямой келген товарлар короче</p>
                     </div>
                 </div>
             </section>
 
             <section class="products-section">
-                <h2>Featured Products</h2>
-                <div class="products-grid" id="productsGrid">
-                    <!-- Products will be loaded by JavaScript -->
-                </div>
+                <h2>Рекомендуемые продукты</h2>
+
+                <div id="products-container" class="products-grid"></div>
+
             </section>
         </div>
     </main>
@@ -136,7 +138,12 @@
         </div>
     </footer>
 
-    <script src="/js/data.js"></script>
-    <script src="/js/app.js"></script>
+
+    <script  src="js/banner.js"></script>
+    <script type="module" src="js/data.js"></script>
+    <script type="module" src="js/script.js"></script>
+
+
 </body>
+
 </html>
