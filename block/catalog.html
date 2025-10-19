@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechStore - Catalog</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
+
 <body>
     <header class="header">
         <div class="container">
             <div class="header-top">
-                <div class="logo"><a href="index.html">TechStore</a></div>
+                <div class="logo"><a href="../index.html">TechStore</a></div>
                 <button class="catalog-btn" id="catalogBtn">
-                    <span class="icon">☰</span> Catalog
+                    ☰
                 </button>
                 <div class="city" id="citySelector">
                     <span class="icon">📍</span>
@@ -25,16 +27,16 @@
                 <div class="header-actions">
                     <a href="favorites.html" class="icon-btn">
                         <span class="icon">❤️</span>
-                        <span class="label">Favorites</span>
+                        <span class="label">Избранные</span>
                     </a>
                     <a href="cart.html" class="icon-btn">
                         <span class="icon">🛒</span>
-                        <span class="label">Cart</span>
+                        <span class="label">Корзина</span>
                         <span class="badge" id="cartBadge">0</span>
                     </a>
                     <a href="profile.html" class="icon-btn user-section" id="userSection">
                         <span class="icon">👤</span>
-                        <span class="label" id="userName">Guest</span>
+                        <span class="label" id="userName">Профиль</span>
                     </a>
                 </div>
             </div>
@@ -57,34 +59,36 @@
     <main class="main-content">
         <div class="container">
             <div class="catalog-header">
-                <h1>Product Catalog</h1>
+                <h1>Каталог товаров</h1>
                 <div class="catalog-controls">
                     <div class="filter-section">
-                        <label>Category:</label>
+                        <label>Категория:</label>
                         <select id="categoryFilter">
-                            <option value="all">All Categories</option>
-                            <option value="phones">Phones</option>
-                            <option value="laptops">Laptops</option>
-                            <option value="accessories">Accessories</option>
-                            <option value="tablets">Tablets</option>
-                            <option value="smartwatches">Smartwatches</option>
+                            <option value="all">Все категории</option>
+                            <option value="phones">Телефоны</option>
+                            <option value="laptops">Ноутбуки</option>
+                            <option value="accessories">Аксессуары</option>
+                            <option value="tablets">Наушники</option>
+                            <option value="smartwatches">Смартчасы</option>
                         </select>
                     </div>
                     <div class="sort-section">
                         <label>Sort by:</label>
                         <select id="sortFilter">
-                            <option value="popularity">Popularity</option>
-                            <option value="price-low">Price: Low to High</option>
-                            <option value="price-high">Price: High to Low</option>
-                            <option value="rating">Rating</option>
+                            <option value="popularity">Популярные</option>
+                            <option value="price-low">Цена: от низкой до высокой</option>
+                            <option value="price-high">Цена: от высокой до низкой</option>
+                            <option value="rating">Рейтинг</option>
                         </select>
                     </div>
                 </div>
             </div>
 
-            <div class="products-grid" id="catalogGrid">
-                <!-- Products will be loaded by JavaScript -->
-            </div>
+            <section class="products-section">
+                <div class="products-grid" id="catalogGrid">
+                    <!-- Products will be loaded by JavaScript -->
+                </div>
+            </section>
         </div>
     </main>
 
@@ -118,7 +122,8 @@
         </div>
     </footer>
 
-    <script src="/js/data.js"></script>
-    <script src="/js/catalog.js"></script>
+    <script type="module" src="/js/data.js"></script>
+    <script type="module" src="/js/catalog.js"></script>
 </body>
+
 </html>

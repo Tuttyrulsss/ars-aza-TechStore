@@ -1,108 +1,157 @@
-// Import productManager or declare it before using
-const productManager = {
-  getProducts: () => {
-    // Dummy implementation for demonstration purposes
-    return [
-      {
-        id: 1,
-        category: "electronics",
-        name: "Laptop",
-        description: "A high-performance laptop",
-        price: 999,
-        rating: 4.5,
-        popularity: 100,
-      },
-      {
-        id: 2,
-        category: "clothing",
-        name: "T-Shirt",
-        description: "A comfortable cotton t-shirt",
-        price: 19,
-        rating: 4.0,
-        popularity: 50,
-      },
-      // Add more products as needed
-    ]
-  },
-}
+// catalog.js
 
-// Get URL parameters
-const urlParams = new URLSearchParams(window.location.search)
-const categoryParam = urlParams.get("category")
-const searchParam = urlParams.get("search")
+class CatalogManager {
+  constructor() {
+    // Загружаем продукты — либо из data.js, либо из localStorage
+    this.products = window.productManager
+      ? window.productManager.getProducts()
+      : this.getProductsFromStorage();
 
-// Set initial filters
-const categoryFilter = document.getElementById("categoryFilter")
-const sortFilter = document.getElementById("sortFilter")
-
-if (categoryParam && categoryFilter) {
-  categoryFilter.value = categoryParam
-}
-
-// Filter and display products
-function displayProducts() {
-  const category = categoryFilter.value
-  const sort = sortFilter.value
-  const search = searchParam ? searchParam.toLowerCase() : ""
-
-  let prods = productManager.getProducts()
-
-  // Filter by category
-  if (category !== "all") {
-    prods = prods.filter((p) => p.category === category)
+    this.filteredProducts = [...this.products];
+    this.init();
   }
 
-  // Filter by search
-  if (search) {
-    prods = prods.filter((p) => p.name.toLowerCase().includes(search) || p.description.toLowerCase().includes(search))
+  getProductsFromStorage() {
+    try {
+      return JSON.parse(localStorage.getItem("products")) || [];
+    } catch {
+      return [];
+    }
   }
 
-  // Sort products
-  switch (sort) {
-    case "price-low":
-      prods.sort((a, b) => a.price - b.price)
-      break
-    case "price-high":
-      prods.sort((a, b) => b.price - a.price)
-      break
-    case "rating":
-      prods.sort((a, b) => b.rating - a.rating)
-      break
-    case "popularity":
-      prods.sort((a, b) => b.popularity - a.popularity)
-      break
+  init() {
+    console.log("CatalogManager initialized, products:", this.products);
+    this.renderProducts();
+    this.setupEventListeners();
+    this.setupCatalogMenu();
+    this.applyUrlFilters();
+    this.updateCartBadge();
   }
 
-  const catalogGrid = document.getElementById("catalogGrid")
+  renderProducts() {
+    const container = document.getElementById("catalogGrid");
+    if (!container) {
+      console.error("Container #catalogGrid not found!");
+      return;
+    }
 
-  if (prods.length === 0) {
-    catalogGrid.innerHTML = '<div style="text-align: center; padding: 60px 20px;"><h2>No products found</h2></div>'
-    return
-  }
+    console.log("Rendering products:", this.filteredProducts);
 
-  catalogGrid.innerHTML = prods
-    .map(
-      (product) => `
-        <div class="product-card" onclick="window.location.href='product.html?id=${product.id}'">
-            <div class="product-image">${product.image}</div>
-            <div class="product-name">${product.name}</div>
-            <div class="product-rating">${"⭐".repeat(Math.floor(product.rating))} ${product.rating}</div>
-            <div class="product-description">${product.description}</div>
-            <div class="product-price">$${product.price}</div>
+    if (this.filteredProducts.length === 0) {
+      container.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+          <div style="font-size: 80px; margin-bottom: 20px;">😔</div>
+          <h3>No products found</h3>
+          <p>Try changing your filters or search terms</p>
         </div>
-    `,
-    )
-    .join("")
+      `;
+      return;
+    }
+
+    container.innerHTML = this.filteredProducts
+      .map((product) => {
+        const stars = "⭐".repeat(Math.floor(product.rating));
+
+        return `
+          <div class="product-card" data-id="${product.id}">
+            <div class="product-image">
+              ${product.image && product.image.includes(".")
+            ? `<img src="${product.image}" alt="${product.name}" style="width: 100%; height: 200px; object-fit: cover;">`
+            : "📱"
+          }
+            </div>
+            <h3 class="product-name">${product.name}</h3>
+            <div class="product-rating">${stars} ${product.rating}</div>
+            <p class="product-description">${product.description}</p>
+            <div class="product-price">$${product.price}</div>
+            <button class="btn-primary btn-block add-to-cart" data-id="${product.id}">
+              Add to Cart
+            </button>
+          </div>
+        `;
+      })
+      .join("");
+
+    this.setupProductInteractions();
+  }
+
+  setupProductInteractions() {
+    const addToCartButtons = document.querySelectorAll(".add-to-cart");
+    addToCartButtons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        const id = e.target.dataset.id;
+        const product = this.products.find((p) => p.id == id);
+        if (product) {
+          this.addToCart(product);
+          alert(`${product.name} added to cart!`);
+        }
+      });
+    });
+  }
+
+  addToCart(product) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push(product);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    this.updateCartBadge();
+  }
+
+  updateCartBadge() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const badge = document.getElementById("cartBadge");
+    if (badge) badge.textContent = cart.length;
+  }
+
+  applyUrlFilters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get("category");
+
+    if (category) {
+      this.filteredProducts = this.products.filter((p) =>
+        p.category?.toLowerCase().includes(category.toLowerCase())
+      );
+      this.renderProducts();
+    }
+  }
+
+  setupEventListeners() {
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput) {
+      searchInput.addEventListener("input", (e) => {
+        const value = e.target.value.toLowerCase();
+        this.filteredProducts = this.products.filter((p) =>
+          p.name.toLowerCase().includes(value)
+        );
+        this.renderProducts();
+      });
+    }
+  }
+
+  setupCatalogMenu() {
+    const btn = document.getElementById("catalogBtn");
+    const menu = document.getElementById("catalogMenu");
+
+    if (!btn || !menu) {
+      console.warn("Catalog menu or button not found!");
+      return;
+    }
+
+    btn.addEventListener("click", () => {
+      menu.classList.toggle("active");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!menu.contains(e.target) && e.target !== btn) {
+        menu.classList.remove("active");
+      }
+    });
+  }
 }
 
-// Event listeners
-if (categoryFilter) {
-  categoryFilter.addEventListener("change", displayProducts)
-}
-
-if (sortFilter) {
-  sortFilter.addEventListener("change", displayProducts)
-}
-
-// Initial display
-displayProducts()
+// === Запуск после загрузки DOM ===
+document.addEventListener("DOMContentLoaded", () => {
+  // даем чуть времени для data.js
+  setTimeout(() => {
+    new CatalogManager();
+  }, 100);
+});
