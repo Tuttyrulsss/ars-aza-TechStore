@@ -1,5 +1,4 @@
-
-
+// Список товаров
 export const products = [
   {
     id: 1,
@@ -81,159 +80,187 @@ export const products = [
     image: "img/iphon.jpg",
     popularity: 92,
   },
-]
+];
 
-// Storage helpers
+// === Локальное хранилище ===
 const storage = {
   get: (key) => {
     try {
-      return JSON.parse(localStorage.getItem(key))
+      return JSON.parse(localStorage.getItem(key));
     } catch {
-      return null
+      return null;
     }
   },
   set: (key, value) => {
-    localStorage.setItem(key, JSON.stringify(value))
+    localStorage.setItem(key, JSON.stringify(value));
   },
   remove: (key) => {
-    localStorage.removeItem(key)
+    localStorage.removeItem(key);
   },
-}
+};
 
-// User management
+// === Менеджер пользователя ===
 const userManager = {
   getCurrentUser: () => storage.get("currentUser"),
   setCurrentUser: (user) => storage.set("currentUser", user),
   logout: () => storage.remove("currentUser"),
   getUsers: () => storage.get("users") || [],
   addUser: (user) => {
-    const users = userManager.getUsers()
-    users.push(user)
-    storage.set("users", users)
+    const users = userManager.getUsers();
+    users.push(user);
+    storage.set("users", users);
   },
   updateUser: (email, updates) => {
-    const users = userManager.getUsers()
-    const index = users.findIndex((u) => u.email === email)
+    const users = userManager.getUsers();
+    const index = users.findIndex((u) => u.email === email);
     if (index !== -1) {
-      users[index] = { ...users[index], ...updates }
-      storage.set("users", users)
+      users[index] = { ...users[index], ...updates };
+      storage.set("users", users);
       if (userManager.getCurrentUser()?.email === email) {
-        userManager.setCurrentUser(users[index])
+        userManager.setCurrentUser(users[index]);
       }
     }
   },
   findUser: (email) => {
-    const users = userManager.getUsers()
-    return users.find((u) => u.email === email)
+    const users = userManager.getUsers();
+    return users.find((u) => u.email === email);
   },
-}
+};
 
-// Cart management
+// === Менеджер корзины ===
 const cartManager = {
   getCart: () => storage.get("cart") || [],
   addToCart: (product, quantity = 1) => {
-    const cart = cartManager.getCart()
-    const existingItem = cart.find((item) => item.id === product.id)
+    const cart = cartManager.getCart();
+    const existingItem = cart.find((item) => item.id === product.id);
 
     if (existingItem) {
-      existingItem.quantity += quantity
+      existingItem.quantity += quantity;
     } else {
-      cart.push({ ...product, quantity })
+      cart.push({ ...product, quantity });
     }
 
-    storage.set("cart", cart)
-    updateCartBadge()
+    storage.set("cart", cart);
+    updateCartBadge();
   },
   updateQuantity: (productId, quantity) => {
-    const cart = cartManager.getCart()
-    const item = cart.find((item) => item.id === productId)
+    const cart = cartManager.getCart();
+    const item = cart.find((item) => item.id === productId);
     if (item) {
-      item.quantity = quantity
-      storage.set("cart", cart)
-      updateCartBadge()
+      item.quantity = quantity;
+      storage.set("cart", cart);
+      updateCartBadge();
     }
   },
   removeFromCart: (productId) => {
-    let cart = cartManager.getCart()
-    cart = cart.filter((item) => item.id !== productId)
-    storage.set("cart", cart)
-    updateCartBadge()
+    let cart = cartManager.getCart();
+    cart = cart.filter((item) => item.id !== productId);
+    storage.set("cart", cart);
+    updateCartBadge();
   },
   clearCart: () => {
-    storage.set("cart", [])
-    updateCartBadge()
+    storage.set("cart", []);
+    updateCartBadge();
   },
   getTotal: () => {
-    const cart = cartManager.getCart()
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0)
+    const cart = cartManager.getCart();
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   },
-}
+};
 
-// Orders management
+// === Менеджер избранного ===
+const favoritesManager = {
+  key: "favorites",
+  getFavorites() {
+    return storage.get(this.key) || [];
+  },
+  saveFavorites(favs) {
+    storage.set(this.key, favs);
+  },
+  toggleFavorite(id) {
+    const favs = this.getFavorites();
+    const index = favs.indexOf(id);
+    if (index === -1) favs.push(id);
+    else favs.splice(index, 1);
+    this.saveFavorites(favs);
+    return favs.includes(id);
+  },
+  isFavorite(id) {
+    return this.getFavorites().includes(id);
+  },
+};
+
+// === Менеджер заказов ===
 const ordersManager = {
   getOrders: () => storage.get("orders") || [],
   addOrder: (order) => {
-    const orders = ordersManager.getOrders()
-    orders.unshift(order)
-    storage.set("orders", orders)
+    const orders = ordersManager.getOrders();
+    orders.unshift(order);
+    storage.set("orders", orders);
   },
-}
+};
 
-// Product management
+// === Менеджер продуктов ===
 const productManager = {
   getProducts: () => storage.get("products") || products,
   setProducts: (prods) => storage.set("products", prods),
   getProduct: (id) => {
-    const prods = productManager.getProducts()
-    return prods.find((p) => p.id === Number.parseInt(id))
+    const prods = productManager.getProducts();
+    return prods.find((p) => p.id === Number.parseInt(id));
   },
   addProduct: (product) => {
-    const prods = productManager.getProducts()
-    product.id = Math.max(...prods.map((p) => p.id), 0) + 1
-    prods.push(product)
-    productManager.setProducts(prods)
+    const prods = productManager.getProducts();
+    product.id = Math.max(...prods.map((p) => p.id), 0) + 1;
+    prods.push(product);
+    productManager.setProducts(prods);
   },
   updateProduct: (id, updates) => {
-    const prods = productManager.getProducts()
-    const index = prods.findIndex((p) => p.id === id)
+    const prods = productManager.getProducts();
+    const index = prods.findIndex((p) => p.id === id);
     if (index !== -1) {
-      prods[index] = { ...prods[index], ...updates }
-      productManager.setProducts(prods)
+      prods[index] = { ...prods[index], ...updates };
+      productManager.setProducts(prods);
     }
   },
   deleteProduct: (id) => {
-    let prods = productManager.getProducts()
-    prods = prods.filter((p) => p.id !== id)
-    productManager.setProducts(prods)
+    let prods = productManager.getProducts();
+    prods = prods.filter((p) => p.id !== id);
+    productManager.setProducts(prods);
   },
-}
+};
 
-// Initialize products if not exists
+// === Инициализация ===
 if (!storage.get("products")) {
-  productManager.setProducts(products)
+  productManager.setProducts(products);
 }
 
-// Update cart badge
 function updateCartBadge() {
-  const badge = document.getElementById("cartBadge")
+  const badge = document.getElementById("cartBadge");
   if (badge) {
-    const cart = cartManager.getCart()
-    const count = cart.reduce((sum, item) => sum + item.quantity, 0)
-    badge.textContent = count
+    const cart = cartManager.getCart();
+    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+    badge.textContent = count;
   }
 }
 
-// Update user display
 function updateUserDisplay() {
-  const userName = document.getElementById("userName")
+  const userName = document.getElementById("userName");
   if (userName) {
-    const user = userManager.getCurrentUser()
-    userName.textContent = user ? user.name : "Профиль"
+    const user = userManager.getCurrentUser();
+    userName.textContent = user ? user.name : "Профиль";
   }
 }
 
-// Initialize on page load
 document.addEventListener("DOMContentLoaded", () => {
-  updateCartBadge()
-  updateUserDisplay()
-})
+  updateCartBadge();
+  updateUserDisplay();
+});
+
+// === Экспорты ===
+export {
+  userManager,
+  cartManager,
+  favoritesManager,
+  ordersManager,
+  productManager,
+};
