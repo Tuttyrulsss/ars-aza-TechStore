@@ -4,9 +4,9 @@ export const products = [
     id: 1,
     name: "iPhone 15 Pro",
     category: "phones",
-    price: 999,
+    price: "$999",
     rating: 4.8,
-    description: "Latest iPhone with A17 Pro chip and titanium design",
+    description: "Новейший iPhone с чипом A17 Pro и титановым дизайном",
     image: "img/iphon.jpg",
     popularity: 95,
   },
@@ -14,9 +14,9 @@ export const products = [
     id: 2,
     name: "MacBook Pro 16",
     category: "laptops",
-    price: 2499,
+    price: "$2499",
     rating: 4.9,
-    description: "Powerful laptop with M3 Max chip for professionals",
+    description: "Мощный ноутбук с чипом M3 Max для профессионалов",
     image: "img/iphon.jpg",
     popularity: 90,
   },
@@ -24,9 +24,9 @@ export const products = [
     id: 3,
     name: "AirPods Pro",
     category: "accessories",
-    price: 249,
+    price: "$249",
     rating: 4.7,
-    description: "Premium wireless earbuds with active noise cancellation",
+    description: "Премиальные беспроводные наушники с активным шумоподавлением",
     image: "img/iphon.jpg",
     popularity: 88,
   },
@@ -34,9 +34,9 @@ export const products = [
     id: 4,
     name: "iPad Air",
     category: "tablets",
-    price: 599,
+    price: "$599",
     rating: 4.6,
-    description: "Versatile tablet with M1 chip and stunning display",
+    description: "Универсальный планшет с чипом M1 и потрясающим дисплеем",
     image: "img/iphon.jpg",
     popularity: 85,
   },
@@ -44,9 +44,9 @@ export const products = [
     id: 5,
     name: "Apple Watch Ultra",
     category: "smartwatches",
-    price: 799,
+    price: "$799",
     rating: 4.8,
-    description: "Rugged smartwatch for extreme adventures",
+    description: "Прочные умные часы для экстремальных приключений",
     image: "img/iphon.jpg",
     popularity: 82,
   },
@@ -54,9 +54,9 @@ export const products = [
     id: 6,
     name: "Samsung Galaxy S24",
     category: "phones",
-    price: 899,
+    price: "$899",
     rating: 4.7,
-    description: "Flagship Android phone with AI features",
+    description: "Флагманский Android-телефон с функциями ИИ",
     image: "img/iphon.jpg",
     popularity: 87,
   },
@@ -64,9 +64,9 @@ export const products = [
     id: 7,
     name: "Dell XPS 15",
     category: "laptops",
-    price: 1799,
+    price: "$1799",
     rating: 4.6,
-    description: "Premium Windows laptop with stunning display",
+    description: "Премиальный ноутбук на Windows с потрясающим дисплеем",
     image: "img/iphon.jpg",
     popularity: 80,
   },
@@ -74,9 +74,9 @@ export const products = [
     id: 8,
     name: "Sony WH-1000XM5",
     category: "accessories",
-    price: 399,
+    price: "$399",
     rating: 4.9,
-    description: "Industry-leading noise cancelling headphones",
+    description: "Лучшие в отрасли наушники с шумоподавлением",
     image: "img/iphon.jpg",
     popularity: 92,
   },
@@ -86,16 +86,26 @@ export const products = [
 const storage = {
   get: (key) => {
     try {
-      return JSON.parse(localStorage.getItem(key));
-    } catch {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : null;
+    } catch (error) {
+      console.error(`Ошибка чтения ${key}:`, error);
       return null;
     }
   },
   set: (key, value) => {
-    localStorage.setItem(key, JSON.stringify(value));
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error(`Ошибка сохранения ${key}:`, error);
+    }
   },
   remove: (key) => {
-    localStorage.removeItem(key);
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.error(`Ошибка удаления ${key}:`, error);
+    }
   },
 };
 
@@ -130,6 +140,7 @@ const userManager = {
 // === Менеджер корзины ===
 const cartManager = {
   getCart: () => storage.get("cart") || [],
+
   addToCart: (product, quantity = 1) => {
     const cart = cartManager.getCart();
     const existingItem = cart.find((item) => item.id === product.id);
@@ -143,77 +154,135 @@ const cartManager = {
     storage.set("cart", cart);
     updateCartBadge();
   },
+
   updateQuantity: (productId, quantity) => {
     const cart = cartManager.getCart();
     const item = cart.find((item) => item.id === productId);
     if (item) {
-      item.quantity = quantity;
+      item.quantity = Math.max(1, quantity); // Минимум 1
       storage.set("cart", cart);
       updateCartBadge();
     }
   },
+
   removeFromCart: (productId) => {
     let cart = cartManager.getCart();
     cart = cart.filter((item) => item.id !== productId);
     storage.set("cart", cart);
     updateCartBadge();
   },
+
   clearCart: () => {
     storage.set("cart", []);
     updateCartBadge();
   },
+
   getTotal: () => {
     const cart = cartManager.getCart();
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   },
+
+  // ИСПРАВЛЕНО: Добавлен метод isInCart
+  isInCart: (productId) => {
+    const cart = cartManager.getCart();
+    return cart.some((item) => item.id === productId);
+  },
+
+  getCartCount: () => {
+    const cart = cartManager.getCart();
+    return cart.reduce((sum, item) => sum + item.quantity, 0);
+  }
 };
 
 // === Менеджер избранного ===
 const favoritesManager = {
   key: "favorites",
+
   getFavorites() {
     return storage.get(this.key) || [];
   },
+
   saveFavorites(favs) {
     storage.set(this.key, favs);
   },
+
   toggleFavorite(id) {
     const favs = this.getFavorites();
     const index = favs.indexOf(id);
-    if (index === -1) favs.push(id);
-    else favs.splice(index, 1);
+
+    if (index === -1) {
+      favs.push(id);
+    } else {
+      favs.splice(index, 1);
+    }
+
     this.saveFavorites(favs);
     return favs.includes(id);
   },
+
   isFavorite(id) {
     return this.getFavorites().includes(id);
   },
+
+  addFavorite(id) {
+    const favs = this.getFavorites();
+    if (!favs.includes(id)) {
+      favs.push(id);
+      this.saveFavorites(favs);
+    }
+  },
+
+  removeFavorite(id) {
+    let favs = this.getFavorites();
+    favs = favs.filter(favId => favId !== id);
+    this.saveFavorites(favs);
+  }
 };
 
 // === Менеджер заказов ===
 const ordersManager = {
   getOrders: () => storage.get("orders") || [],
+
   addOrder: (order) => {
     const orders = ordersManager.getOrders();
+    // Добавляем ID и дату
+    order.id = Date.now();
+    order.date = new Date().toISOString();
     orders.unshift(order);
     storage.set("orders", orders);
   },
+
+  updateOrderStatus: (orderId, status) => {
+    const orders = ordersManager.getOrders();
+    const order = orders.find(o => o.id === orderId);
+    if (order) {
+      order.status = status;
+      storage.set("orders", orders);
+    }
+  }
 };
 
 // === Менеджер продуктов ===
 const productManager = {
-  getProducts: () => storage.get("products") || products,
+  getProducts: () => {
+    const stored = storage.get("products");
+    return stored && stored.length > 0 ? stored : products;
+  },
+
   setProducts: (prods) => storage.set("products", prods),
+
   getProduct: (id) => {
     const prods = productManager.getProducts();
     return prods.find((p) => p.id === Number.parseInt(id));
   },
+
   addProduct: (product) => {
     const prods = productManager.getProducts();
     product.id = Math.max(...prods.map((p) => p.id), 0) + 1;
     prods.push(product);
     productManager.setProducts(prods);
   },
+
   updateProduct: (id, updates) => {
     const prods = productManager.getProducts();
     const index = prods.findIndex((p) => p.id === id);
@@ -222,11 +291,25 @@ const productManager = {
       productManager.setProducts(prods);
     }
   },
+
   deleteProduct: (id) => {
     let prods = productManager.getProducts();
     prods = prods.filter((p) => p.id !== id);
     productManager.setProducts(prods);
   },
+
+  searchProducts: (query) => {
+    const prods = productManager.getProducts();
+    const lowerQuery = query.toLowerCase().trim();
+
+    if (!lowerQuery) return prods;
+
+    return prods.filter(product =>
+      product.name.toLowerCase().includes(lowerQuery) ||
+      product.description.toLowerCase().includes(lowerQuery) ||
+      product.category.toLowerCase().includes(lowerQuery)
+    );
+  }
 };
 
 // === Инициализация ===
@@ -234,12 +317,22 @@ if (!storage.get("products")) {
   productManager.setProducts(products);
 }
 
+// === Обновление бейджей ===
 function updateCartBadge() {
   const badge = document.getElementById("cartBadge");
   if (badge) {
-    const cart = cartManager.getCart();
-    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const count = cartManager.getCartCount();
     badge.textContent = count;
+    badge.style.display = count > 0 ? 'block' : 'block'; // Всегда показываем
+  }
+}
+
+function updateFavoritesBadge() {
+  const badge = document.getElementById('favoritesBadge');
+  if (badge) {
+    const count = favoritesManager.getFavorites().length;
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'block' : 'block'; // Всегда показываем
   }
 }
 
@@ -251,8 +344,10 @@ function updateUserDisplay() {
   }
 }
 
+// === Инициализация при загрузке ===
 document.addEventListener("DOMContentLoaded", () => {
   updateCartBadge();
+  updateFavoritesBadge();
   updateUserDisplay();
 });
 
@@ -263,4 +358,6 @@ export {
   favoritesManager,
   ordersManager,
   productManager,
+  updateCartBadge,
+  updateFavoritesBadge,
 };

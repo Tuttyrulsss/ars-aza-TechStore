@@ -1,31 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechStore - Favorites</title>
+    <title>TechStore - Избранное</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/favorites.css">
 </head>
+
 <body>
     <header class="header">
         <div class="container">
             <div class="header-top">
                 <div class="logo"><a href="../index.html">TechStore</a></div>
                 <button class="catalog-btn" id="catalogBtn">
-                    <span class="icon">☰</span> 
+                    ☰ Каталог
                 </button>
                 <div class="city" id="citySelector">
                     <span class="icon">📍</span>
-                    <span id="cityName">Astana</span>
+                    <span id="cityName">Астана</span>
                 </div>
                 <div class="search-bar">
-                    <input type="text" placeholder="Search products..." id="searchInput">
+                    <input type="text" placeholder="Поиск продуктов..." id="searchInput">
                     <button class="search-btn">🔍</button>
                 </div>
                 <div class="header-actions">
                     <a href="favorites.html" class="icon-btn">
                         <span class="icon">❤️</span>
                         <span class="label">Избранные</span>
+                        <span class="badge" id="favoritesBadge">0</span>
                     </a>
                     <a href="cart.html" class="icon-btn">
                         <span class="icon">🛒</span>
@@ -41,15 +45,44 @@
         </div>
     </header>
 
+    <div class="catalog-overlay" id="catalogOverlay"></div>
+    <div class="catalog-menu" id="catalogMenu">
+        <div class="catalog-content">
+            <h3>Категории</h3>
+            <ul>
+                <li><a href="/block/catalog.html?category=phones"><span class="category-icon">📱</span> Телефоны</a>
+                </li>
+                <li><a href="/block/catalog.html?category=laptops"><span class="category-icon">💻</span> Ноутбуки</a>
+                </li>
+                <li><a href="/block/catalog.html?category=accessories"><span class="category-icon">🎧</span>
+                        Аксессуары</a></li>
+                <li><a href="/block/catalog.html?category=tablets"><span class="category-icon">📱</span> Планшеты</a>
+                </li>
+                <li><a href="/block/catalog.html?category=smartwatches"><span class="category-icon">⌚</span> Умные
+                        часы</a></li>
+            </ul>
+        </div>
+    </div>
+
     <main class="main-content">
         <div class="container">
-            <h1>Избранные</h1>
-            <div class="empty-cart">
-                <div class="empty-cart-icon">❤️</div>
-                <h2>Пока избранных нет</h2>
-                <p>Начните добавлять товары в избранное!</p><br>
-                <a href="catalog.html" class="btn-primary">Просмотр продуктов</a>
+            <div class="favorites-header">
+                <h1>Избранное</h1>
+                <button class="btn-clear-all" id="clearAllBtn" style="display: none;">
+                    🗑️ Очистить всё
+                </button>
             </div>
+
+            <!-- Пустое состояние -->
+            <div class="empty-favorites" id="emptyFavorites">
+                <div class="empty-icon">💔</div>
+                <h2>Ваше избранное пусто</h2>
+                <p>Добавьте товары, которые вам нравятся, чтобы не потерять их!</p>
+                <a href="catalog.html" class="btn-primary">Перейти в каталог</a>
+            </div>
+
+            <!-- Сетка избранных товаров -->
+            <div class="favorites-grid" id="favoritesGrid"></div>
         </div>
     </main>
 
@@ -57,19 +90,19 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>About TechStore</h4>
-                    <p>Your trusted online technology store with the best deals on electronics.</p>
+                    <h4>О TechStore</h4>
+                    <p>Ваш надежный интернет-магазин техники с лучшими предложениями на электронику.</p>
                 </div>
                 <div class="footer-section">
-                    <h4>Quick Links</h4>
+                    <h4>Быстрые ссылки</h4>
                     <ul>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="about.html">О нас</a></li>
+                        <li><a href="contact.html">Контакты</a></li>
+                        <li><a href="privacy.html">Политика конфиденциальности</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Follow Us</h4>
+                    <h4>Подписывайтесь на нас</h4>
                     <div class="social-links">
                         <a href="#" class="social-icon">📘</a>
                         <a href="#" class="social-icon">📷</a>
@@ -78,12 +111,13 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 TechStore. All rights reserved.</p>
+                <p>&copy; 2025 TechStore. Все права защищены.</p>
             </div>
         </div>
     </footer>
 
-    <script src="/js/data.js"></script>
-    <script src="/js/app.js"></script>
+    <script type="module" src="/js/data.js"></script>
+    <script type="module" src="/js/favorites.js"></script>
 </body>
+
 </html>

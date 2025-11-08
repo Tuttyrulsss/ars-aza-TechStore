@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechStore - Home</title>
+    <title>TechStore - Главная</title>
     <link rel="stylesheet" href="/css/styles.css">
+  
 </head>
 
 <body>
@@ -14,11 +15,11 @@
             <div class="header-top">
                 <div class="logo">TechStore</div>
                 <button class="catalog-btn" id="catalogBtn">
-                ☰
+                    ☰ Каталог
                 </button>
                 <div class="city" id="citySelector">
                     <span class="icon">📍</span>
-                    <span id="cityName">Astana</span>
+                    <span id="cityName">Астана</span>
                 </div>
                 <div class="search-bar">
                     <input type="text" placeholder="Поиск продуктов..." id="searchInput">
@@ -28,6 +29,7 @@
                     <a href="/block/favorites.html" class="icon-btn">
                         <span class="icon">❤️</span>
                         <span class="label">Избранные</span>
+                        <span class="badge" id="favoritesBadge">0</span>
                     </a>
                     <a href="/block/cart.html" class="icon-btn">
                         <span class="icon">🛒</span>
@@ -43,15 +45,21 @@
         </div>
     </header>
 
+    <div class="catalog-overlay" id="catalogOverlay"></div>
     <div class="catalog-menu" id="catalogMenu">
         <div class="catalog-content">
-            <h3>Categories</h3>
+            <h3>Категории</h3>
             <ul>
-                <li><a href="/block/catalog.html?category=phones">📱 Phones</a></li>
-                <li><a href="/block/catalog.html?category=laptops">💻 Laptops</a></li>
-                <li><a href="/block/catalog.html?category=accessories">🎧 Accessories</a></li>
-                <li><a href="/block/catalog.html?category=tablets">📱 Tablets</a></li>
-                <li><a href="/block/catalog.html?category=smartwatches">⌚ Smartwatches</a></li>
+                <li><a href="/block/catalog.html?category=phones"><span class="category-icon">📱</span> Телефоны</a>
+                </li>
+                <li><a href="/block/catalog.html?category=laptops"><span class="category-icon">💻</span> Ноутбуки</a>
+                </li>
+                <li><a href="/block/catalog.html?category=accessories"><span class="category-icon">🎧</span>
+                        Аксессуары</a></li>
+                <li><a href="/block/catalog.html?category=tablets"><span class="category-icon">📱</span> Планшеты</a>
+                </li>
+                <li><a href="/block/catalog.html?category=smartwatches"><span class="category-icon">⌚</span> Умные
+                        часы</a></li>
             </ul>
         </div>
     </div>
@@ -73,14 +81,14 @@
                             <div class="banner-content">
                                 <h1>Новые поступления</h1>
                                 <p>Ознакомьтесь с новейшими гаджетами</p>
-                                <a href="/block/catalog.html" class="btn-primary">Посмотрим</a>
+                                <a href="/block/catalog.html" class="btn-primary">Посмотреть</a>
                             </div>
                         </div>
                         <div class="banner-slide">
                             <div class="banner-content">
                                 <h1>Премиум качество</h1>
-                                <p>Лучшие бренды по самым выгодным ценам от азамата</p>
-                                <a href="/block/catalog.html" class="btn-primary">Аза чорт</a>
+                                <p>Лучшие бренды по самым выгодным ценам</p>
+                                <a href="/block/catalog.html" class="btn-primary">Перейти в каталог</a>
                             </div>
                         </div>
                     </div>
@@ -93,17 +101,15 @@
                 <div class="promo-card">
                     <div class="promo-image">🎉</div>
                     <div class="promo-text">
-                        <h3>Специальный сюрпрайз</h3>
-                        <p>Амазоннан прямой келген товарлар короче</p>
+                        <h3>Специальное предложение</h3>
+                        <p>Товары напрямую от поставщиков с гарантией качества</p>
                     </div>
                 </div>
             </section>
 
             <section class="products-section">
                 <h2>Рекомендуемые продукты</h2>
-
                 <div id="products-container" class="products-grid"></div>
-
             </section>
         </div>
     </main>
@@ -112,19 +118,19 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>About TechStore</h4>
-                    <p>Your trusted online technology store with the best deals on electronics.</p>
+                    <h4>О TechStore</h4>
+                    <p>Ваш надежный интернет-магазин техники с лучшими предложениями на электронику.</p>
                 </div>
                 <div class="footer-section">
-                    <h4>Quick Links</h4>
+                    <h4>Быстрые ссылки</h4>
                     <ul>
-                        <li><a href="/block/about.html">About Us</a></li>
-                        <li><a href="/block/contact.html">Contact</a></li>
-                        <li><a href="/block/privacy.html">Privacy Policy</a></li>
+                        <li><a href="/block/about.html">О нас</a></li>
+                        <li><a href="/block/contact.html">Контакты</a></li>
+                        <li><a href="/block/privacy.html">Политика конфиденциальности</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Follow Us</h4>
+                    <h4>Подписывайтесь на нас</h4>
                     <div class="social-links">
                         <a href="#" class="social-icon">📘</a>
                         <a href="#" class="social-icon">📷</a>
@@ -133,16 +139,14 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 TechStore. All rights reserved.</p>
+                <p>&copy; 2025 TechStore. Все права защищены.</p>
             </div>
         </div>
     </footer>
 
-
-    <script  src="js/banner.js"></script>
+    <script src="js/banner.js"></script>
     <script type="module" src="js/data.js"></script>
     <script type="module" src="js/script.js"></script>
-
 
 </body>
 
